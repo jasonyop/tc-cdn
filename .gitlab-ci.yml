@@ -1,0 +1,108 @@
+include:
+  - project: devops/cicd/gitlab-ci-common
+    ref: v0.15.14
+    file:
+      - pipeline/standard.gitlab-ci.yml
+      - credentials/main.gitlab-ci.yml
+  - project: devops/cicd/gitlab-ci-common-utils
+    ref: v0.1.2
+    file:
+      - main.gitlab-ci.yml
+
+stages:
+  - terraform:test
+  - git:tag
+  - pipeline:cleanup
+
+##################################################
+# terraform:test
+##################################################
+
+basic_test_default:
+  stage: terraform:test
+  extends:
+    - .aws_dev_terraform_remote_state_credential
+    - .docker_my_kl_01_harbor_credential
+    - .gitlab_credential
+    - .team_account_credential
+  variables:
+    VAULT_TOKEN: vault:login
+  before_script:
+    - !reference [.gitlab_login, script]
+    - !reference [.docker_init, script]
+  script:
+    - gitlab_login "$GITLAB_TOKEN"
+    - docker_init
+    - docker login --username "$TEAM_ACCOUNT_LDAP_USERNAME" --password "$TEAM_ACCOUNT_LDAP_PASSWORD" "$CR_MY_KL_01_HARBOR_ENDPOINT"
+    - make terraform-test-basic-default
+  tags:
+    - devops-dev
+
+basic_test_cn:
+  stage: terraform:test
+  extends:
+    - .aws_dev_terraform_remote_state_credential
+    - .docker_my_kl_01_harbor_credential
+    - .gitlab_credential
+    - .team_account_credential
+  variables:
+    VAULT_TOKEN: vault:login
+  before_script:
+    - !reference [.gitlab_login, script]
+    - !reference [.docker_init, script]
+  script:
+    - gitlab_login "$GITLAB_TOKEN"
+    - docker_init
+    - docker login --username "$TEAM_ACCOUNT_LDAP_USERNAME" --password "$TEAM_ACCOUNT_LDAP_PASSWORD" "$CR_MY_KL_01_HARBOR_ENDPOINT"
+    - make terraform-test-basic-cn
+  tags:
+    - devops-dev
+
+basic_test_th:
+  stage: terraform:test
+  extends:
+    - .aws_dev_terraform_remote_state_credential
+    - .docker_my_kl_01_harbor_credential
+    - .gitlab_credential
+    - .team_account_credential
+  variables:
+    VAULT_TOKEN: vault:login
+  before_script:
+    - !reference [.gitlab_login, script]
+    - !reference [.docker_init, script]
+  script:
+    - gitlab_login "$GITLAB_TOKEN"
+    - docker_init
+    - docker login --username "$TEAM_ACCOUNT_LDAP_USERNAME" --password "$TEAM_ACCOUNT_LDAP_PASSWORD" "$CR_MY_KL_01_HARBOR_ENDPOINT"
+    - make terraform-test-basic-th
+  tags:
+    - devops-dev
+
+##################################################
+# git:tag
+##################################################
+
+git_tag:
+  stage: git:tag
+  extends:
+    - .gitlab_credential
+  before_script:
+    - !reference [.gitlab_create_tag, script]
+    - !reference [.git_version, script]
+  script:
+    - gitlab_create_tag "$GITLAB_TOKEN" "$(git_version)"
+
+##################################################
+# pipeline:cleanup
+##################################################
+
+pipeline_cleanup:
+  stage: pipeline:cleanup
+  extends:
+    - .gitlab_credential
+  before_script:
+    - !reference [.gitlab_cleanup_pipelines, script]
+  script:
+    - gitlab_cleanup_pipelines "$GITLAB_TOKEN"
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH || $CI_COMMIT_TAG
