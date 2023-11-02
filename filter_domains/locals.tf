@@ -7,7 +7,7 @@ locals {
         subdomain = subdomain.name
 
         tags = merge(
-          { for tag_key, tag_value in domain.tags : replace(tag_key, "-", "_") => tag_value if contains(["active"], tag_key) },
+          { for tag_key, tag_value in domain.tags : replace(tag_key, "-", "_") => tag_value },
           { for tag_key, tag_value in subdomain.tags : replace(tag_key, "-", "_") => tag_value }
         )
 
