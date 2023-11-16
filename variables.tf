@@ -33,12 +33,14 @@ variable "module_tmpl" {
   description = <<EOF
 Module template output format.
   - `resource_name`          : Template for resource naming.
+  - `module_name`            : Specify full name used for module.
   - `ssl_cert_resource_name` : Template for TencentCloud SSL resource naming.
   - `terraform_vault_path`   : Template for Terraform module's vault path.
   - `ssl_cert_vault_path`    : Template for ssl certificate vault path.
 EOF
   type = object({
     resource_name          = optional(string, "{brand}-{env}-web-server-cdn-{domain_country}")
+    module_name            = optional(string, "{brand}-{env}-tencentcloud-web-server-cdn-{domain_country}")
     ssl_cert_resource_name = optional(string, "{brand}-{env}-web-server-cdn")
     terraform_vault_path   = optional(string, "devops/terraform/{brand}/{env}/{be_app_category}/tencentcloud-web-server-cdn-{domain_country}")
     ssl_cert_vault_path    = optional(string, "devops/ssl_cert/{brand}/{env}/zerossl")
@@ -236,5 +238,10 @@ variable "cdn_vendor" {
 
 variable "notice_ids" {
   description = "List of Notice IDs for TencentCloud Monitor Alarm."
+  type        = list(string)
+}
+
+variable "vault_approle_cidrs_for_game_deploy" {
+  description = "List of cidr that allow instances to access to game-deploy appRoles."
   type        = list(string)
 }
