@@ -77,4 +77,6 @@ module "tencentcloud_cdn" {
   }
 
   notice_ids = []
+
+  vault_approle_cidrs_for_game_deploy = ["0.0.0.0/0"]
 }
