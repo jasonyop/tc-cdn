@@ -42,37 +42,39 @@ module "tencentcloud_cdn" {
     }
   }
 
-  games = {
-    games_entry = {
-      enable = true
+  million_plan = {
+    landing = {
+      backoffice = {
+        enable = true
 
-      alarm = local.alarm
+        alarm = local.alarm
+      }
     }
 
-    games_resources = {
-      enable = true
+    games = {
+      games_entry = {
+        enable = true
 
-      alarm = local.alarm
-    }
+        alarm = local.alarm
+      }
 
-    app = {
-      enable = true
+      games_resources = {
+        enable = true
 
-      alarm = local.alarm
-    }
+        alarm = local.alarm
+      }
 
-    public = {
-      enable = true
+      app = {
+        enable = true
 
-      alarm = local.alarm
-    }
-  }
+        alarm = local.alarm
+      }
 
-  landing = {
-    backoffice = {
-      enable = true
+      public = {
+        enable = true
 
-      alarm = local.alarm
+        alarm = local.alarm
+      }
     }
   }
 
