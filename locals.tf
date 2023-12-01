@@ -13,11 +13,11 @@ locals {
 
   merged_filtered_domains = merge(
     try(module.filtered_domains_crm_backoffice[0].filtered_domains, {}),
-    try(module.filtered_domains_games_app[0].filtered_domains, {}),
-    try(module.filtered_domains_games_games_entry[0].filtered_domains, {}),
-    try(module.filtered_domains_games_games_resources[0].filtered_domains, {}),
-    try(module.filtered_domains_games_public[0].filtered_domains, {}),
-    try(module.filtered_domains_landing_backoffice[0].filtered_domains, {}),
+    try(module.filtered_domains_million_plan_games_app[0].filtered_domains, {}),
+    try(module.filtered_domains_million_plan_games_games_entry[0].filtered_domains, {}),
+    try(module.filtered_domains_million_plan_games_games_resources[0].filtered_domains, {}),
+    try(module.filtered_domains_million_plan_games_public[0].filtered_domains, {}),
+    try(module.filtered_domains_million_plan_landing_backoffice[0].filtered_domains, {}),
   )
   distincted_filtered_domains = distinct([
     for domain in local.merged_filtered_domains : domain.domain
@@ -25,10 +25,10 @@ locals {
 
   merged_tencentcloud_cdn_output = merge(
     try(module.cdn_domains_crm_backoffice, {}),
-    try(module.cdn_domains_games_app, {}),
-    try(module.cdn_domains_games_games_entry, {}),
-    try(module.cdn_domains_games_games_resources, {}),
-    try(module.cdn_domains_games_public, {}),
-    try(module.cdn_domains_landing_backoffice, {}),
+    try(module.cdn_domains_million_plan_games_app, {}),
+    try(module.cdn_domains_million_plan_games_games_entry, {}),
+    try(module.cdn_domains_million_plan_games_games_resources, {}),
+    try(module.cdn_domains_million_plan_games_public, {}),
+    try(module.cdn_domains_million_plan_landing_backoffice, {}),
   )
 }

@@ -64,152 +64,126 @@ EOF
   })
 }
 
-variable "games" {
+variable "million_plan" {
   description = <<EOF
-Configuration of games subdomains for CDN.
-  - `games_entry`              : Configuration of games entry subdomains for CDN.
-    - `enable`                 : Define whether to create TencentCloud CDN.
-    - `alarm`                  : Define the alarm config.
-      - `query_per_minute`     : Config of QPS alarm rules.
-        - `enable`             : Whether to enable QPS alarm.
-        - `threshold`          : Threshold for QPS count.
-      - `gigabytes_downloaded` : Config of Gigabytes downloaded alarm rules.
-        - `enable`             : Whether to enable Gigabytes downloaded alarm.
-        - `threshold`          : Threshold for Gigabytes downloaded.
-  - `games_resources`          : Configuration of games resources subdomains for CDN.
-    - `enable`                 : Define whether to create TencentCloud CDN.
-    - `alarm`                  : Define the alarm config.
-      - `query_per_minute`     : Config of QPS alarm rules.
-        - `enable`             : Whether to enable QPS alarm.
-        - `threshold`          : Threshold for QPS count.
-      - `gigabytes_downloaded` : Config of Gigabytes downloaded alarm rules.
-        - `enable`             : Whether to enable Gigabytes downloaded alarm.
-        - `threshold`          : Threshold for Gigabytes downloaded.
-  - `app`                      : Configuration of app subdomains for CDN.
-    - `enable`                 : Define whether to create TencentCloud CDN.
-    - `alarm`                  : Define the alarm config.
-      - `query_per_minute`     : Config of QPS alarm rules.
-        - `enable`             : Whether to enable QPS alarm.
-        - `threshold`          : Threshold for QPS count.
-      - `gigabytes_downloaded` : Config of Gigabytes downloaded alarm rules.
-        - `enable`             : Whether to enable Gigabytes downloaded alarm.
-        - `threshold`          : Threshold for Gigabytes downloaded.
-  - `public`                   : Configuration of public subdomains for CDN.
-    - `enable`                 : Define whether to create TencentCloud CDN.
-    - `alarm`                  : Define the alarm config.
-      - `query_per_minute`     : Config of QPS alarm rules.
-        - `enable`             : Whether to enable QPS alarm.
-        - `threshold`          : Threshold for QPS count.
-      - `gigabytes_downloaded` : Config of Gigabytes downloaded alarm rules.
-        - `enable`             : Whether to enable Gigabytes downloaded alarm.
-        - `threshold`          : Threshold for Gigabytes downloaded.
+Configuration of million_plan for CDN.
+  - `landing`                    : Config for mp-landing be-app-category.
+    - `backoffice`               : Backoffice config.
+      - `enable`                 : Define whether to create TencentCloud CDN.
+      - `alarm`                  : Define the alarm config.
+        - `query_per_minute`     : Config of QPS alarm rules.
+          - `enable`             : Whether to enable QPS alarm.
+          - `threshold`          : Threshold for QPS count.
+        - `gigabytes_downloaded` : Config of Gigabytes downloaded alarm rules.
+          - `enable`             : Whether to enable Gigabytes downloaded alarm.
+          - `threshold`          : Threshold for Gigabytes downloaded.
+
+  - `games`                      : Config for mp-games be-app-category.
+    - `games_entry`              : Configuration of games entry subdomains for CDN.
+      - `enable`                 : Define whether to create TencentCloud CDN.
+      - `alarm`                  : REFER to 'landing.backoffice.alarm' object.
+
+    - `games_resources`          : Configuration of games resources subdomains for CDN.
+      - `enable`                 : Define whether to create TencentCloud CDN.
+      - `alarm`                  : REFER to 'landing.backoffice.alarm' object.
+
+    - `app`                      : Configuration of app subdomains for CDN.
+      - `enable`                 : Define whether to create TencentCloud CDN.
+      - `alarm`                  : REFER to 'landing.backoffice.alarm' object.
+
+    - `public`                   : Configuration of public subdomains for CDN.
+      - `enable`                 : Define whether to create TencentCloud CDN.
+      - `alarm`                  : REFER to 'landing.backoffice.alarm' object.
+
 EOF
   type = object({
-    games_entry = optional(object({
-      enable = bool
+    landing = object({
+      backoffice = optional(object({
+        enable = bool
 
-      alarm = object({
-        query_per_minute = object({
-          enable    = bool
-          threshold = number
+        alarm = object({
+          query_per_minute = object({
+            enable    = bool
+            threshold = number
+          })
+          gigabytes_downloaded = object({
+            enable    = bool
+            threshold = number
+          })
         })
-        gigabytes_downloaded = object({
-          enable    = bool
-          threshold = number
-        })
-      })
-    }))
+      }))
+    })
 
-    games_resources = optional(object({
-      enable = bool
+    games = object({
+      games_entry = optional(object({
+        enable = bool
 
-      alarm = object({
-        query_per_minute = object({
-          enable    = bool
-          threshold = number
+        alarm = object({
+          query_per_minute = object({
+            enable    = bool
+            threshold = number
+          })
+          gigabytes_downloaded = object({
+            enable    = bool
+            threshold = number
+          })
         })
-        gigabytes_downloaded = object({
-          enable    = bool
-          threshold = number
-        })
-      })
-    }))
+      }))
 
-    app = optional(object({
-      enable = bool
+      games_resources = optional(object({
+        enable = bool
 
-      alarm = object({
-        query_per_minute = object({
-          enable    = bool
-          threshold = number
+        alarm = object({
+          query_per_minute = object({
+            enable    = bool
+            threshold = number
+          })
+          gigabytes_downloaded = object({
+            enable    = bool
+            threshold = number
+          })
         })
-        gigabytes_downloaded = object({
-          enable    = bool
-          threshold = number
-        })
-      })
-    }))
+      }))
 
-    public = optional(object({
-      enable = bool
+      app = optional(object({
+        enable = bool
 
-      alarm = object({
-        query_per_minute = object({
-          enable    = bool
-          threshold = number
+        alarm = object({
+          query_per_minute = object({
+            enable    = bool
+            threshold = number
+          })
+          gigabytes_downloaded = object({
+            enable    = bool
+            threshold = number
+          })
         })
-        gigabytes_downloaded = object({
-          enable    = bool
-          threshold = number
-        })
-      })
-    }))
-  })
-}
+      }))
 
-variable "landing" {
-  description = <<EOF
-Configuration of landing be-app-category for CDN.
-  - `backoffice`                : Backoffice config.
-    - `enable`                  : Define whether to create TencentCloud CDN.
-    - `alarm`                   : Define the alarm config.
-      - `query_per_minute`      : Config of QPS alarm rules.
-        - `enable`              : Whether to enable QPS alarm.
-        - `threshold`           : Threshold for QPS count.
-      - `gigabytes_downloaded`  : Config of Gigabytes downloaded alarm rules.
-        - `enable`              : Whether to enable Gigabytes downloaded alarm.
-        - `threshold`           : Threshold for Gigabytes downloaded.
-EOF
-  type = object({
-    backoffice = optional(object({
-      enable = bool
+      public = optional(object({
+        enable = bool
 
-      alarm = object({
-        query_per_minute = object({
-          enable    = bool
-          threshold = number
+        alarm = object({
+          query_per_minute = object({
+            enable    = bool
+            threshold = number
+          })
+          gigabytes_downloaded = object({
+            enable    = bool
+            threshold = number
+          })
         })
-        gigabytes_downloaded = object({
-          enable    = bool
-          threshold = number
-        })
-      })
-    }))
+      }))
+    })
   })
 }
 
 variable "crm" {
   description = <<EOF
 Configuration of crm be-app-category for CDN.
-  - `backoffice`                : Backoffice config.
-    - `enable`                  : Define whether to create TencentCloud CDN.
-    - `alarm`                   : Define the alarm config.
-      - `query_per_minute`      : Config of QPS alarm rules.
-        - `enable`              : Whether to enable QPS alarm.
-        - `threshold`           : Threshold for QPS count.
-      - `gigabytes_downloaded`  : Config of Gigabytes downloaded alarm rules.
-        - `enable`              : Whether to enable Gigabytes downloaded alarm.
-        - `threshold`           : Threshold for Gigabytes downloaded.
+  - `backoffice` : Backoffice config.
+    - `enable`   : Define whether to create TencentCloud CDN.
+    - `alarm`    : REFER to 'landing.backoffice.alarm' object.
 EOF
   type = object({
     backoffice = optional(object({
