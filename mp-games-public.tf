@@ -39,7 +39,11 @@ module "cdn_alarm_million_plan_games_public" {
 
   resource_name   = local.resource_name
   domain_category = "mp-games-public"
-  cdn_domains     = keys(module.filtered_domains_million_plan_games_public[0].filtered_domains)
+  cdn_domains = [
+    # Only create alarm while the domain tag "active": true.
+    for domain, config in module.filtered_domains_million_plan_games_public[0].filtered_domains :
+    domain if config.tags["active"]
+  ]
 
   alert_rule_config = var.million_plan.games.public.alarm
 
