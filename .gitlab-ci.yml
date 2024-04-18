@@ -1,6 +1,6 @@
 include:
   - project: devops/cicd/gitlab-ci-common
-    ref: v0.15.14
+    ref: v0.15.19
     file:
       - pipeline/standard.gitlab-ci.yml
       - credentials/main.gitlab-ci.yml
